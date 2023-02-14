@@ -8,6 +8,9 @@ const mongoSanitize = require('express-mongo-sanitize');
 
 const routes = require('./routes');
 
+const passport = require('passport');
+const { jwtStrategy } = require('./middleware/passport');
+
 require('dotenv').config();
 
 const app = express();
@@ -18,6 +21,10 @@ app.use(bodyParser.json());
 // Sanitize
 app.use(xss());
 app.use(mongoSanitize());
+
+// Passport
+app.use(passport.initialize());
+passport.use('jwt', jwtStrategy);
 
 // Middleware
 const { handleError, convertToApiError } = require('./middleware/apiArror');
